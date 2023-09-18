@@ -9,5 +9,4 @@
         public string OpeningHours { get; set; }
         public int NumberOfTables { get; set; }
     }
-
 }
