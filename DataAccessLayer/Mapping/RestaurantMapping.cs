@@ -18,8 +18,7 @@ namespace DataAccessLayer.Mapping
             builder.Property(r => r.OpeningHours)
                 .HasColumnName("openingHours")
                 .IsRequired()
-                .HasMaxLength(50)
-                .HasDefaultValue();
+                .HasMaxLength(50);
             builder.Property(r => r.NumberOfTables)
                 .HasColumnName("tableCount")
                 .IsRequired();
