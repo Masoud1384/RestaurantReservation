@@ -7,6 +7,6 @@ namespace DataAccessLayer.Repositories
     {
         Restaurant FindRestaurant(Expression<Func<Restaurant, bool>> expression);
         List<Restaurant> Ingredients(Expression<Func<Restaurant, bool>> expression);
-        void Update(Restaurant recipeRating);
+        bool Update(Restaurant restaurant);
     }
 }

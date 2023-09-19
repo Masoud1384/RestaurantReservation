@@ -7,6 +7,6 @@ namespace DataAccessLayer.Repositories
     {
         Reservation FindUser(Expression<Func<Reservation, bool>> expression);
         List<Reservation> Ingredients(Expression<Func<Reservation, bool>> expression);
-        void Update(Reservation recipeRating);
+        bool Update(Reservation reservation);
     }
 }

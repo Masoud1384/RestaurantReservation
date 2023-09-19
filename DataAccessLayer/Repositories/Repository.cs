@@ -24,6 +24,7 @@ namespace DataAccessLayer.Repositories
         public void Create(T entity)
         {
             _context.Add(entity);
+            SaveChanges();
         }
 
         public bool Exists(Expression<Func<T, bool>> expression)
