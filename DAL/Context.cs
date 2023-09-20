@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestaurantReservation;
+﻿using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
 {

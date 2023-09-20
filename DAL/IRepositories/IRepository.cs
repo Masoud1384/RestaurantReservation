@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace DataAccessLayer.Repositories
+namespace DataAccessLayer.IRepositories
 {
     public interface IRepository<TKey, T> where T : class
     {

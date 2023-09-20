@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace BusinessLogicLayer.Models
+namespace DataAccessLayer.Models
 {
     public class Address
     {

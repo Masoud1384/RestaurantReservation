@@ -1,7 +1,7 @@
-﻿using RestaurantReservation;
+﻿using DataAccessLayer.Models;
 using System.Linq.Expressions;
 
-namespace DataAccessLayer.Repositories
+namespace DataAccessLayer.IRepositories
 {
     public interface IRestaurantRepository : IRepository<int, Restaurant>
     {

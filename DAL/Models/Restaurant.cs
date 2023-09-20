@@ -1,6 +1,4 @@
-﻿using BusinessLogicLayer.Models;
-
-namespace RestaurantReservation
+﻿namespace DataAccessLayer.Models
 {
     public class Restaurant
     {

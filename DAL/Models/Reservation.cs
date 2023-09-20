@@ -1,5 +1,5 @@
 ﻿
-namespace RestaurantReservation
+namespace DataAccessLayer.Models
 {
     public class Reservation
     {
