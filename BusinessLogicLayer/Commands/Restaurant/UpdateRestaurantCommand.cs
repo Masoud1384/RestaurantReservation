@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLogicLayer.Commands.Restaurant
+﻿namespace BusinessLogicLayer.Commands.Restaurant
 {
-    internal class UpdateRestaurantCommand
+    public class UpdateRestaurantCommand : CreateRestaurantCommand
     {
+        public int Id { get; set; }
     }
 }

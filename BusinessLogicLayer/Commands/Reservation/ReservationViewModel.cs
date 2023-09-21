@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer.Commands.Reservation
 {
-    internal class ReservationViewModel
+    public class ReservationViewModel
     {
+        public int Id { get; set; }
+        public int NumberOfGuests { get; set; }
+        public DateTime ReservationTime { get; set; }
+        public string SpecialRequests { get; set; }
+        public ReservationStatus reservationStatus { get; set; }
+        public string reservatorEmail { get; set; }
+        public string restaurantName { get; set; }
     }
 }

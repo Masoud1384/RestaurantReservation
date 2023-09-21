@@ -13,6 +13,8 @@ namespace DataAccessLayer.Mapping
                 .HasColumnName("name")
                 .IsRequired()
                 .HasMaxLength(100);
+            builder.HasIndex(r => r.Name)
+                .IsUnique();
             builder
                 .OwnsOne(t => t.restaurantInformation);
             builder.Property(r => r.OpeningHours)

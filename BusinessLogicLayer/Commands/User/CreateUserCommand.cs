@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLogicLayer.Commands.Reservation;
 
 namespace BusinessLogicLayer.Commands.User
 {
-    internal class CreateUserCommand
+    public class CreateUserCommand
     {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public List<CreateReservationCommand>? Reservations { get; set; }
     }
 }

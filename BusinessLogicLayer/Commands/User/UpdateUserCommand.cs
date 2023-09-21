@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLogicLayer.Commands.User
+﻿namespace BusinessLogicLayer.Commands.User
 {
-    internal class UpdateUserCommand
+    public class UpdateUserCommand : CreateUserCommand
     {
+        public int Id { get; set; }
     }
 }

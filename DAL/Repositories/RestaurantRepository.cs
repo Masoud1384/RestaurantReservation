@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repositories
 {
+
     public class RestaurantRepository : Repository<int, Restaurant>, IRestaurantRepository
     {
         private readonly Context _context;

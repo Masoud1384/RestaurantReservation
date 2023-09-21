@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessLogicLayer.Commands.Reservation
+﻿namespace BusinessLogicLayer.Commands.Reservation
 {
-    internal class UpdateReservationCommand
+    public class UpdateReservationCommand : CreateReservationCommand
     {
+        public int Id { get; set; }
     }
 }

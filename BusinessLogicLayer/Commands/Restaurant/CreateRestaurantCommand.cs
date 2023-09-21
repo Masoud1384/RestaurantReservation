@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer.Commands.Restaurant
 {
-    internal class CreateRestaurantCommand
+    public class CreateRestaurantCommand
     {
+        public string Name { get; set; }
+        public string OpeningHours { get; set; }
+        public int NumberOfTables { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public string phonenumber { get; set; }
     }
 }
