@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantReservation", "Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{75E34BDC-D105-449E-9CBC-B34846EC160E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{05D520C4-E33A-4CBF-82BB-C2F3882FB523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DAL\DataAccessLayer.csproj", "{05D520C4-E33A-4CBF-82BB-C2F3882FB523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,6 +9,9 @@ namespace BusinessLogicLayer
     {
         public static void ConfigureProjectServices(IServiceCollection services)
         {
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
         }
     }
 }
