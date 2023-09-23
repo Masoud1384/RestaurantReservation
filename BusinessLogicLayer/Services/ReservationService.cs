@@ -1,10 +1,11 @@
-﻿using DataAccessLayer.IRepositories;
+﻿using BusinessLogicLayer.IServices;
+using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
 using System.Linq.Expressions;
 
 namespace BusinessLogicLayer.Services
 {
-    public class ReservationService
+    public class ReservationService : IReservationService
     {
         private IReservationRepository _reservationRepository;
 

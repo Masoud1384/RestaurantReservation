@@ -1,12 +1,13 @@
 ﻿using BusinessLogicLayer.Commands.Restaurant;
 using BusinessLogicLayer.Commands.User;
+using BusinessLogicLayer.IServices;
 using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
 using System.Linq.Expressions;
 
 namespace BusinessLogicLayer.Services
 {
-    public class RestaurantService
+    public class RestaurantService : IRestaurantServices
     {
         private IRestaurantRepository _restaurantRepository;
 
@@ -15,11 +16,10 @@ namespace BusinessLogicLayer.Services
             _restaurantRepository = restaurantRepository;
         }
 
-        public Restaurant GetRestaurant(int id)
+        public Restaurant GetRestaurant(int id) 
         {
             return _restaurantRepository.Get(id);
         }
-
         public List<Restaurant> GetRestaurants()
         {
             return _restaurantRepository.Get();

@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Commands.Reservation;
 using BusinessLogicLayer.Commands.User;
+using BusinessLogicLayer.IServices;
 using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private IUserRepository _userRepository;
 

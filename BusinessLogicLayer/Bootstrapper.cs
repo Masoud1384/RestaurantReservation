@@ -1,4 +1,6 @@
-﻿using DataAccessLayer.IRepositories;
+﻿using BusinessLogicLayer.IServices;
+using BusinessLogicLayer.Services;
+using DataAccessLayer.IRepositories;
 using DataAccessLayer.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,10 @@ namespace BusinessLogicLayer
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+
+            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IReservationService,ReservationService>();
+            services.AddScoped<IRestaurantServices,RestaurantService>();
         }
     }
 }
