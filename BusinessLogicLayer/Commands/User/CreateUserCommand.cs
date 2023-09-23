@@ -18,7 +18,16 @@ namespace BusinessLogicLayer.Commands.User
 
         public CreateUserCommand(string name, string email, List<CreateReservationCommand>? reservations) : this(name, email)
         {
-            Reservations = reservations;
+            Reservations = reservations.Select(r=> 
+            new ReservationViewModel
+            {
+                NumberOfGuests = r.NumberOfGuests,
+                ReservationTime = r.ReservationTime,
+                restaurantName = r.user.Name,
+                reservatorEmail = r.user.Email,
+                SpecialRequests = r.SpecialRequests,
+                reservationStatus = r.reservationStatus,
+            }).ToList();
         }
     }
 }

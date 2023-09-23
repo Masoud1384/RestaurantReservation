@@ -13,13 +13,13 @@ namespace DataAccessLayer.Repositories
         {
             _context = context;
         }
-        public User FindUser(Expression<Func<User, bool>> expression)
+        public User FindUser(int id)
         {
-            var result = _context.users.FirstOrDefault(expression);
+            var result = _context.users.FirstOrDefault(r => r.Id== id);
             return result;
         }
 
-        public List<User> Ingredients(Expression<Func<User, bool>> expression)
+        public List<User> Users(Expression<Func<User, bool>> expression)
         {
             var result = _context.users.Where(expression).ToList();
             return result;
