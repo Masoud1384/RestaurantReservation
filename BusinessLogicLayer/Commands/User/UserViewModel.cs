@@ -1,4 +1,4 @@
-﻿namespace BusinessLogicLayer.Commands.User
+﻿    namespace BusinessLogicLayer.Commands.User
 {
     public class UserViewModel : CreateUserCommand
     {

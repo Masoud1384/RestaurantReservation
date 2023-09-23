@@ -6,7 +6,7 @@ namespace BusinessLogicLayer.Commands.User
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public List<CreateReservationCommand>? Reservations { get; set; }
+        public List<ReservationViewModel>? Reservations { get; set; }
 
         public CreateUserCommand() { }
 

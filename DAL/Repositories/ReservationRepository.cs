@@ -15,13 +15,12 @@ namespace DataAccessLayer.Repositories
             _context = context;
         }
 
-        public Reservation FindUser(Expression<Func<Reservation, bool>> expression)
+        public Reservation FindUser(int id)
         {
-            var result = _context.reservations.FirstOrDefault(expression);
-            return result;
+            return _context.reservations.FirstOrDefault(r => r.Id == id);
         }
-
-        public List<Reservation> Ingredients(Expression<Func<Reservation, bool>> expression)
+        
+        public List<Reservation> Reservations(Expression<Func<Reservation, bool>> expression)
         {
             var result = _context.reservations.Where(expression).ToList();
             return result;

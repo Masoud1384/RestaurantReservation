@@ -5,8 +5,8 @@ namespace DataAccessLayer.IRepositories
 {
     public interface IRestaurantRepository : IRepository<int, Restaurant>
     {
-        Restaurant FindRestaurant(Expression<Func<Restaurant, bool>> expression);
-        List<Restaurant> Ingredients(Expression<Func<Restaurant, bool>> expression);
+        Restaurant FindRestaurant(int id);
+        List<Restaurant> Restaurants(Expression<Func<Restaurant, bool>> expression);
         bool Update(Restaurant restaurant);
     }
 }
