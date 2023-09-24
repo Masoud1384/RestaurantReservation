@@ -9,7 +9,7 @@ namespace BusinessLogicLayer.Commands.Reservation
         public DateTime ReservationTime { get; set; }
         public string SpecialRequests { get; set; }
         public ReservationStatus reservationStatus { get; set; }
-        public string reservatorEmail { get; set; }
         public string restaurantName { get; set; }
+        public int userId { get; set; }
     }
 }

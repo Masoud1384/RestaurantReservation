@@ -15,20 +15,22 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpGet]
-        public List<ReservationViewModel> Get()
+        public IActionResult Get()
         {
-            return _reservationService.GetReservations();
+            return Ok(_reservationService.GetReservations());
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var user = _reservationService.FindUser(id);
+            return Ok(user);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] CreateReservationCommand createReservation)
         {
+            return _reservationService.CreateReservation(createReservation);
         }
 
         [HttpPut("{id}")]
