@@ -3,6 +3,7 @@ using BusinessLogicLayer.IServices;
 using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 
 namespace BusinessLogicLayer.Services
 {
@@ -14,33 +15,79 @@ namespace BusinessLogicLayer.Services
         {
             _restaurantRepository = restaurantRepository;
         }
-
-        public Restaurant GetRestaurant(int id) 
+        public RestaurantViewModel GetRestaurant(int id) 
         {
-            return _restaurantRepository.Get(id);
+            var r = _restaurantRepository.Get(id);
+            var vm = new RestaurantViewModel
+            {
+                address = r.restaurantInformation.address,
+                city = r.restaurantInformation.city,
+                Name = r.Name,
+                NumberOfTables = r.NumberOfTables,
+                OpeningHours = r.OpeningHours,
+                phonenumber = r.restaurantInformation.phonenumber
+            };
+            return vm;
         }
-        public List<Restaurant> GetRestaurants()
+        public List<RestaurantViewModel> GetRestaurants()
         {
-            return _restaurantRepository.Get();
+            return _restaurantRepository.Get().
+                Select(r=> new RestaurantViewModel
+                {
+                    address = r.restaurantInformation.address,
+                    city = r.restaurantInformation.city,
+                    Name = r.Name,
+                    NumberOfTables = r.NumberOfTables,
+                    OpeningHours= r.OpeningHours,
+                    phonenumber =r.restaurantInformation.phonenumber
+                }).ToList();
         }
-
-        public void CreateRestaurant(Restaurant restaurant)
+        public List<RestaurantViewModel> GetRestaurants(Expression<Func<RestaurantViewModel,bool>> expression)
         {
-            _restaurantRepository.Create(restaurant);
+            return _restaurantRepository.Get().
+                Select(r=> new RestaurantViewModel
+                {
+                    address = r.restaurantInformation.address,
+                    city = r.restaurantInformation.city,
+                    Name = r.Name,
+                    NumberOfTables = r.NumberOfTables,
+                    OpeningHours= r.OpeningHours,
+                    phonenumber =r.restaurantInformation.phonenumber
+                }).ToList();
+        }
+        public void CreateRestaurant(CreateRestaurantCommand restaurant)
+        {
+            var result = new Restaurant(restaurant.Name,restaurant.OpeningHours,restaurant.NumberOfTables,
+                new Address(restaurant.address,restaurant.city,restaurant.phonenumber));
+            _restaurantRepository.Create(result);
             _restaurantRepository.SaveChanges();
         }
-
-        public bool RestaurantExists(Expression<Func<Restaurant, bool>> expression)
+        public bool RestaurantExists(Expression<Func<RestaurantViewModel, bool>> expression)
         {
-            return _restaurantRepository.Exists(expression);
+            var exp = Converter(expression);
+            return _restaurantRepository.Exists(exp);
         }
-
-        public Restaurant FindRestaurant(int id)
+        public RestaurantViewModel FindRestaurant(int id)
         {
-            return _restaurantRepository.FindRestaurant(id);
+            var r = _restaurantRepository.FindRestaurant(id);
+            var vm = new RestaurantViewModel
+            {
+                address= r.restaurantInformation.address,
+                city = r.restaurantInformation.city,
+                Name = r.Name,
+                NumberOfTables= r.NumberOfTables,
+                OpeningHours = r.OpeningHours,
+                phonenumber = r.restaurantInformation.phonenumber
+            };
+            return vm;
         }
-
-        public List<Restaurant> GetRestaurants(Expression<Func<RestaurantViewModel, bool>> expression)
+        public bool UpdateRestaurant(UpdateRestaurantCommand restaurant)
+        {
+            var result = new Restaurant(restaurant.Name,restaurant.OpeningHours,restaurant.NumberOfTables
+                ,new Address(restaurant.address,restaurant.city,restaurant.phonenumber));
+            return _restaurantRepository.Update(result);
+        }
+        private Expression<Func<Restaurant,bool>> Converter(Expression<Func<RestaurantViewModel, bool>> expression)
         {
             var viewModelParameter = Expression.Parameter(typeof(RestaurantViewModel), "viewModel");
 
@@ -54,14 +101,7 @@ namespace BusinessLogicLayer.Services
                 ),
                 viewModelParameter
             );
-
-
-            return _restaurantRepository.Restaurants(restaurantExpression);
-        }
-
-        public bool UpdateRestaurant(Restaurant restaurant)
-        {
-            return _restaurantRepository.Update(restaurant);
+            return restaurantExpression;
         }
     }
 }
