@@ -16,9 +16,25 @@ namespace BusinessLogicLayer.Services
             _userRepository = userRepository;
         }
 
-        public User GetUser(int id)
+        public UserViewModel GetUser(int id)
         {
-            return _userRepository.Get(id);
+            var result = _userRepository.Get(id);
+            var vm = new UserViewModel
+            {
+                Email = result.Email,
+                Name = result.Name,
+                Reservations = result.Reservations.Select(r => new ReservationViewModel
+                {
+                    reservationStatus = r.reservationStatus,
+                    Id = r.Id ,
+                    NumberOfGuests = r.NumberOfGuests,
+                    ReservationTime =r.ReservationTime,
+                    restaurantName= r.Restaurant.Name,
+                    SpecialRequests = r.SpecialRequests,
+                    userId =r.UserId,
+                }).ToList()
+            };
+            return vm;
         }
 
         public List<UserViewModel> GetUsers()
@@ -44,15 +60,7 @@ namespace BusinessLogicLayer.Services
 
         public bool UserExists(Expression<Func<UserViewModel, bool>> expression)
         {
-            var viewModelParameter = Expression.Parameter(typeof(UserViewModel), "viewModel");
-
-            var userExpression = Expression.Lambda<Func<User, bool>>(
-                Expression.Invoke(expression,
-                    Expression.Property(viewModelParameter, nameof(UserViewModel.Name)),
-                    Expression.Property(viewModelParameter, nameof(UserViewModel.Email))
-                ),
-                viewModelParameter
-            );
+            var userExpression = Converter(expression);
             return _userRepository.Exists(userExpression);
         }
 
@@ -70,27 +78,31 @@ namespace BusinessLogicLayer.Services
                     reservationStatus = r.reservationStatus,
                     ReservationTime = r.ReservationTime,
                     restaurantName = r.Restaurant.Name,
-                    reservatorEmail = r.User.Email,
                     SpecialRequests = r.SpecialRequests,
                 }).ToList()
             };
         }
 
-        public List<User> GetUsers(Expression<Func<UserViewModel, bool>> expression)
+        public List<UserViewModel> GetUsers(Expression<Func<UserViewModel, bool>> expression)
         {
-            var viewModelParameter = Expression.Parameter(typeof(UserViewModel), "viewModel");
-
-            var userExpression = Expression.Lambda<Func<User, bool>>(
-                Expression.Invoke(expression,
-                    Expression.Property(viewModelParameter, nameof(UserViewModel.Name)),
-                    Expression.Property(viewModelParameter, nameof(UserViewModel.Email))
-                ),
-                viewModelParameter
-            );
-
-            return _userRepository.Users(userExpression);
+            var userExpression = Converter(expression);
+            var result = _userRepository.Users(userExpression)
+                .Select(u => new UserViewModel
+                {
+                    Email = u.Email,
+                    Name = u.Name,
+                    Reservations = u.Reservations.Select(r => new ReservationViewModel
+                    {
+                        Id = r.Id,
+                        NumberOfGuests = r.NumberOfGuests,
+                        reservationStatus = r.reservationStatus,
+                        ReservationTime = r.ReservationTime,
+                        restaurantName = r.Restaurant.Name,
+                        SpecialRequests = r.SpecialRequests,
+                    }).ToList()
+                }).ToList();
+            return result;
         }
-
         public bool UpdateUser(UpdateUserCommand userCmd)
         {
             if (userCmd != null)
@@ -101,14 +113,25 @@ namespace BusinessLogicLayer.Services
             }
             return false;
         }
-
         public bool DeleteUser(int id)
         {
-            if (_userRepository.Exists(u=>u.Id==id))
+            if (_userRepository.Exists(u => u.Id == id))
             {
                 return _userRepository.Delete(id);
             }
             return false;
+        }
+        private Expression<Func<User, bool>> Converter(Expression<Func<UserViewModel, bool>> expression)
+        {
+            var viewModelParameter = Expression.Parameter(typeof(UserViewModel), "viewModel");
+            var userExpression = Expression.Lambda<Func<User, bool>>(
+                Expression.Invoke(expression,
+                    Expression.Property(viewModelParameter, nameof(UserViewModel.Name)),
+                    Expression.Property(viewModelParameter, nameof(UserViewModel.Email))
+                ),
+                viewModelParameter
+            );
+            return userExpression;
         }
     }
 }

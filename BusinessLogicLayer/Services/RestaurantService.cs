@@ -1,5 +1,4 @@
 ﻿using BusinessLogicLayer.Commands.Restaurant;
-using BusinessLogicLayer.Commands.User;
 using BusinessLogicLayer.IServices;
 using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
