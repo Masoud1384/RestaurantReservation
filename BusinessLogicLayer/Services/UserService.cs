@@ -3,12 +3,7 @@ using BusinessLogicLayer.Commands.User;
 using BusinessLogicLayer.IServices;
 using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
@@ -29,18 +24,22 @@ namespace BusinessLogicLayer.Services
         public List<UserViewModel> GetUsers()
         {
             return _userRepository.Get()
-                .Select(u=> new UserViewModel
+                .Select(u => new UserViewModel
                 {
                     Email = u.Email,
                     Name = u.Name,
                 }).ToList();
         }
 
-        public void CreateUser(CreateUserCommand user)
+        public int CreateUser(CreateUserCommand user)
         {
-            var newUser = new User(user.Name,user.Email);
-            _userRepository.Create(newUser);
-            _userRepository.SaveChanges();
+            var newUser = new User(user.Name, user.Email);
+            var result = _userRepository.CreateUser(newUser);
+            if (_userRepository.SaveChanges() == 1)
+            {
+                return result;
+            }
+            return -1;
         }
 
         public bool UserExists(Expression<Func<UserViewModel, bool>> expression)
@@ -92,9 +91,24 @@ namespace BusinessLogicLayer.Services
             return _userRepository.Users(userExpression);
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateUser(UpdateUserCommand userCmd)
         {
-            return _userRepository.Update(user);
+            if (userCmd != null)
+            {
+                var user = new User(userCmd.Name, userCmd.Email, (List<Reservation>?)userCmd.Reservations
+                    .Select(r => new Reservation(r.NumberOfGuests, r.ReservationTime, r.SpecialRequests, r.reservationStatus, userCmd.Id)));
+                return _userRepository.Update(user);
+            }
+            return false;
+        }
+
+        public bool DeleteUser(int id)
+        {
+            if (_userRepository.Exists(u=>u.Id==id))
+            {
+                return _userRepository.Delete(id);
+            }
+            return false;
         }
     }
 }

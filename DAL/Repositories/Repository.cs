@@ -33,9 +33,9 @@ namespace DataAccessLayer.Repositories
             return _context.Set<T>().Any(expression);
         }
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
 
     }

@@ -8,10 +8,11 @@ namespace BusinessLogicLayer.IServices
     {
         User GetUser(int id);
         List<UserViewModel> GetUsers();
-        void CreateUser(CreateUserCommand user);
+        int CreateUser(CreateUserCommand user);
         bool UserExists(Expression<Func<UserViewModel, bool>> expression);
         UserViewModel FindUser(int id);
         List<User> GetUsers(Expression<Func<UserViewModel, bool>> expression);
-        bool UpdateUser(User user);
+        bool UpdateUser(UpdateUserCommand usercmd);
+        bool DeleteUser(int id);
     }
 }

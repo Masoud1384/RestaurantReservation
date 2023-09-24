@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLogicLayer.Commands.Reservation;
+using BusinessLogicLayer.IServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RestaurantReservation.Controllers
 {
@@ -6,10 +8,16 @@ namespace RestaurantReservation.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IReservationService _reservationService;
+        public ReservationController(IReservationService reservationService)
         {
-            return new string[] { "value1", "value2" };
+            _reservationService = reservationService;
+        }
+
+        [HttpGet]
+        public List<ReservationViewModel> Get()
+        {
+            return _reservationService.GetReservations();
         }
 
         [HttpGet("{id}")]

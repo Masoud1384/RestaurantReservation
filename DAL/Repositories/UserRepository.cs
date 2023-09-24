@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace DataAccessLayer.Repositories
 {
@@ -30,6 +31,20 @@ namespace DataAccessLayer.Repositories
             _context.users.Update(user);
             var result = _context.SaveChanges();
             return result == 1;
+        }
+
+        public int CreateUser(User theUser)
+        {
+            var user = _context.users.Add(theUser);
+            _context.SaveChanges();
+            return theUser.Id;
+        }
+
+        public bool Delete(int id)
+        {
+           var user = _context.users.Find(id);
+            _context.users.Remove(user);
+            return _context.SaveChanges() == 1;
         }
     }
 }

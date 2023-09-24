@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLogicLayer.Commands.User;
+using BusinessLogicLayer.IServices;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +10,79 @@ namespace RestaurantReservation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/<USerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            return new string[] { "value1", "value2" };
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public IEnumerable<UserViewModel> Get()
+        {
+            return _userService.GetUsers();
         }
 
         // GET api/<USerController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public UserViewModel Get(int id)
         {
-            return "value";
+            return _userService.GetUser(id);
         }
 
-        // POST api/<USerController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromQuery] string email, string name)
         {
+            var userId = _userService.CreateUser(new CreateUserCommand
+            {
+                Email = email,
+                Name = name,
+            });
+            if (userId != -1)
+            {
+                var url = Url.Action(nameof(Get), "User", new { id = userId }, Request.Scheme);
+                return Created(url, userId);
+            }
+            return BadRequest();
         }
 
-        // PUT api/<USerController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<UserController>/5
+        [HttpPut]
+        public IActionResult Put([FromBody] UpdateUserCommand userCmd)
         {
+            bool isSuccesed = false;
+            isSuccesed = _userService.UpdateUser(new UpdateUserCommand
+            {
+                Email = userCmd.Email,
+                Id = userCmd.Id,
+                Name = userCmd.Name,
+                Reservations = userCmd.Reservations
+            });
+            int id = 0;
+            if (!isSuccesed)
+            {
+                var createcmd = new CreateUserCommand
+                {
+                    Email = userCmd.Email,
+                    Name = userCmd.Name,
+                };
+                id = _userService.CreateUser(createcmd);
+            }
+            if (id != -1)
+                return Ok();
+
+            return BadRequest();
         }
 
-        // DELETE api/<USerController>/5
+        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var result = _userService.DeleteUser(id);
+            if (result)
+                return Ok();
+
+            return NotFound();
         }
     }
 }

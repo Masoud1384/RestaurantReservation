@@ -26,6 +26,7 @@ namespace RestaurantReservation.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
         }
 
         // PUT api/<RestaurantController>/5
@@ -38,6 +39,7 @@ namespace RestaurantReservation.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }

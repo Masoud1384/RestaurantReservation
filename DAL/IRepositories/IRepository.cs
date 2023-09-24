@@ -12,6 +12,6 @@ namespace DataAccessLayer.IRepositories
 
         bool Exists(Expression<Func<T, bool>> expression);
 
-        void SaveChanges();
+        int SaveChanges();
     }
 }

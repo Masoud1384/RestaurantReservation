@@ -35,6 +35,15 @@ namespace DataAccessLayer.Models
             UserId = userId;
             RestaurantId = restaurantId;
         }
+
+        public Reservation(int numberOfGuests, DateTime reservationTime, string specialRequests, ReservationStatus reservationStatus, int userId)
+        {
+            NumberOfGuests = numberOfGuests;
+            ReservationTime = reservationTime;
+            SpecialRequests = specialRequests;
+            this.reservationStatus = reservationStatus;
+            UserId = userId;
+        }
     }
     public enum ReservationStatus
     {
