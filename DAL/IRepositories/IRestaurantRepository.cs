@@ -8,5 +8,6 @@ namespace DataAccessLayer.IRepositories
         Restaurant FindRestaurant(int id);
         List<Restaurant> Restaurants(Expression<Func<Restaurant, bool>> expression);
         bool Update(Restaurant restaurant);
+        bool Delete(int id);
     }
 }

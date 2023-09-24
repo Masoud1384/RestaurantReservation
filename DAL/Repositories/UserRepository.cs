@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.IRepositories;
 using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
@@ -16,13 +17,13 @@ namespace DataAccessLayer.Repositories
         }
         public User FindUser(int id)
         {
-            var result = _context.users.FirstOrDefault(r => r.Id== id);
+            var result = _context.users.Include(u=>u.Reservations).FirstOrDefault(r => r.Id== id);
             return result;
         }
 
         public List<User> Users(Expression<Func<User, bool>> expression)
         {
-            var result = _context.users.Where(expression).ToList();
+            var result = _context.users.Include(r=>r.Reservations).Where(expression).ToList();
             return result;
         }
 

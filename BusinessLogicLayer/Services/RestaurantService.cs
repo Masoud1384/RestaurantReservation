@@ -103,5 +103,13 @@ namespace BusinessLogicLayer.Services
             );
             return restaurantExpression;
         }
+        public bool DeleteRestaurant(int id)
+        {
+            if (id > 0)
+            {
+                return _restaurantRepository.Delete(id);
+            }
+            return false;
+        }
     }
 }

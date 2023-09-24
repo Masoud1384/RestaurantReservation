@@ -11,5 +11,6 @@ namespace BusinessLogicLayer.IServices
         void CreateRestaurant(CreateRestaurantCommand restaurant);
         List<RestaurantViewModel> GetRestaurants(Expression<Func<RestaurantViewModel, bool>> expression);
         bool UpdateRestaurant(UpdateRestaurantCommand restaurant);
+        bool DeleteRestaurant(int id);
     }
 }

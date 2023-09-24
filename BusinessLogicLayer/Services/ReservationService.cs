@@ -104,6 +104,14 @@ namespace BusinessLogicLayer.Services
             var result = new Reservation(reservation.NumberOfGuests,reservation.ReservationTime,reservation.SpecialRequests,reservation.reservationStatus,reservation.userId);
             return _reservationRepository.Update(result);
         }
+        public bool DeleteReservation(int id)
+        {
+            if(id > 0)
+            {
+                return _reservationRepository.Delete(id);
+            }
+            return false;
+        }
 
         private Reservation Converter(ReservationViewModel vm)
         {
@@ -131,7 +139,5 @@ namespace BusinessLogicLayer.Services
             );
             return reservationExpression;
         }
-
-     
     }
 }

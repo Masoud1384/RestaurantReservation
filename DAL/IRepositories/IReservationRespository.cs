@@ -8,5 +8,6 @@ namespace DataAccessLayer.IRepositories
         Reservation FindUser(int id);
         List<Reservation> Reservations(Expression<Func<Reservation, bool>> expression);
         bool Update(Reservation reservation);
+        bool Delete(int id);
     }
 }
