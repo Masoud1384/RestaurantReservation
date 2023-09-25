@@ -1,8 +1,9 @@
-﻿using BusinessLogicLayer.Commands.User;
+﻿using BusinessLogicLayer.Commands.Reservation;
+using BusinessLogicLayer.Commands.User;
 using BusinessLogicLayer.IServices;
+using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using NuGet.DependencyResolver;
 
 namespace RestaurantReservation.Controllers
 {
@@ -18,26 +19,21 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UserViewModel> Get()
+        public IActionResult Get()
         {
-            return _userService.GetUsers();
+            return Ok(_userService.GetUsers());
         }
 
-        // GET api/<USerController>/5
         [HttpGet("{id}")]
-        public UserViewModel Get(int id)
+        public IActionResult Get(int id)
         {
-            return _userService.GetUser(id);
+            return Ok(_userService.GetUser(id));
         }
 
         [HttpPost]
-        public IActionResult Post([FromQuery] string email, string name)
+        public IActionResult Post([FromQuery] CreateUserCommand createUserCommand)
         {
-            var userId = _userService.CreateUser(new CreateUserCommand
-            {
-                Email = email,
-                Name = name,
-            });
+            var userId = _userService.CreateUser(createUserCommand);
             if (userId != -1)
             {
                 var url = Url.Action(nameof(Get), "User", new { id = userId }, Request.Scheme);
@@ -50,28 +46,20 @@ namespace RestaurantReservation.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] UpdateUserCommand userCmd)
         {
-            bool isSuccesed = false;
-            isSuccesed = _userService.UpdateUser(new UpdateUserCommand
+            int result = 0;
+            if (!_userService.UserExists(r => r.id == userCmd.Id))
             {
-                Email = userCmd.Email,
-                Id = userCmd.Id,
-                Name = userCmd.Name,
-                Reservations = userCmd.Reservations
-            });
-            int id = 0;
-            if (!isSuccesed)
-            {
-                var createcmd = new CreateUserCommand
-                {
-                    Email = userCmd.Email,
-                    Name = userCmd.Name,
-                };
-                id = _userService.CreateUser(createcmd);
+                var create = new CreateUserCommand(userCmd.Name,userCmd.Email);
+                result = _userService.CreateUser(create);
             }
-            if (id != -1)
-                return Ok();
+            else
+            {
+                _userService.UpdateUser(userCmd);
+                result = userCmd.Id;
+            }
+            string url = Url.Action(nameof(Get), "Reservation", new { Id = result }, Request.Scheme);
+            return Ok(url);
 
-            return BadRequest();
         }
 
         // DELETE api/<UserController>/5

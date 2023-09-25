@@ -53,7 +53,8 @@ namespace BusinessLogicLayer.Services
             var result = _userRepository.CreateUser(newUser);
             if (_userRepository.SaveChanges() == 1)
             {
-                return result;
+                _userRepository.Create(newUser);
+                return newUser.Id;
             }
             return -1;
         }
