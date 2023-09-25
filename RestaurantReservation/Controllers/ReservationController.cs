@@ -19,7 +19,11 @@ namespace RestaurantReservation.Controllers
         public IActionResult Get()
         {
             var result = _reservationService.GetReservations().
-                Select(r=>r.links = new List<ApiLink>
+                Select(r =>
+                new ReservationViewModel
+                {
+                    reservationStatus = r.reservationStatus,
+                    links = new List<ApiLink>
                 {
                     new ApiLink
                     {
@@ -33,12 +37,13 @@ namespace RestaurantReservation.Controllers
                         Relationship = "Delete",
                         Method = "Delete"
                     },
-                    new ApiLink
-                    {
-                        Hrref = Url.Action(nameof(Put),"Reservation",Request.Scheme),
-                        Relationship = "Update",
-                        Method = "Put"
-                    },
+                   },
+                    Id = r.Id,
+                    NumberOfGuests = r.NumberOfGuests,
+                    ReservationTime = r.ReservationTime,
+                    restaurantId = r.restaurantId,
+                    SpecialRequests = r.SpecialRequests,
+                    userId = r.userId
                 });
             return Ok(result);
         }
@@ -54,10 +59,10 @@ namespace RestaurantReservation.Controllers
         public IActionResult Post([FromBody] CreateReservationCommand reservationCommand)
         {
             int id = 0;
-            var result = _reservationService.CreateReservation(reservationCommand,out id);
-            if (result&&id>0)
+            var result = _reservationService.CreateReservation(reservationCommand, out id);
+            if (result && id > 0)
             {
-                string url = Url.Action(nameof(Get),"Reservation",new {Id = id },Request.Scheme);
+                string url = Url.Action(nameof(Get), "Reservation", new { Id = id }, Request.Scheme);
                 return Ok(url);
             }
             return BadRequest();
@@ -67,10 +72,10 @@ namespace RestaurantReservation.Controllers
         public IActionResult Put([FromBody] UpdateReservationCommand reservationCommand)
         {
             int id = 0;
-            if (!_reservationService.ReservationExists(r=>r.Id==reservationCommand.Id))
+            if (!_reservationService.ReservationExists(r => r.Id == reservationCommand.Id))
             {
                 var create = new CreateReservationCommand(reservationCommand.NumberOfGuests, reservationCommand.ReservationTime, reservationCommand.SpecialRequests, reservationCommand.reservationStatus);
-                var result = _reservationService.CreateReservation(create,out id);
+                var result = _reservationService.CreateReservation(create, out id);
             }
             else
             {
@@ -83,7 +88,7 @@ namespace RestaurantReservation.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_reservationService.ReservationExists(r=>r.Id==id))
+            if (_reservationService.ReservationExists(r => r.Id == id))
             {
                 _reservationService.DeleteReservation(id);
                 return Ok();

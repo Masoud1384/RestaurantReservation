@@ -43,12 +43,6 @@ namespace RestaurantReservation.Controllers
                         Relationship = "Delete",
                         Method = "Delete"
                     },
-                    new ApiLink
-                    {
-                        Hrref = Url.Action(nameof(Put),"User",new {userCmd = r },Request.Scheme),
-                        Relationship = "Update",
-                        Method = "Put"
-                    },
                 }});
             return Ok(result);
         }
@@ -76,7 +70,6 @@ namespace RestaurantReservation.Controllers
             return BadRequest();
         }
 
-        // PUT api/<UserController>/5
         [HttpPut]
         public IActionResult Put([FromBody] UpdateUserCommand userCmd)
         {
@@ -96,7 +89,6 @@ namespace RestaurantReservation.Controllers
 
         }
 
-        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

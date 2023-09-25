@@ -23,7 +23,13 @@ namespace RestaurantReservation.Controllers
         public IActionResult Get()
         {
             var result = _restaurantServices.GetRestaurants()
-                .Select(r => r.links = new List<ApiLink>
+                .Select(r =>
+                   new RestaurantViewModel
+                   {
+                       address = r.address,
+                       city = r.city,
+                       id = r.id,
+                       links = new List<ApiLink>
                 {
                     new ApiLink
                     {
@@ -37,13 +43,12 @@ namespace RestaurantReservation.Controllers
                         Relationship = "Delete",
                         Method = "Delete"
                     },
-                    new ApiLink
-                    {
-                        Hrref = Url.Action(nameof(Put),"Restaurant",Request.Scheme),
-                        Relationship = "Update",
-                        Method = "Put"
-                    },
-                });
+                   },
+                       Name = r.Name,
+                       NumberOfTables = r.NumberOfTables,
+                       OpeningHours = r.OpeningHours,
+                       phonenumber = r.phonenumber
+                   });
             return Ok(result);
         }
 
@@ -73,7 +78,7 @@ namespace RestaurantReservation.Controllers
             if (!_restaurantServices.RestaurantExists(r => r.id == value.Id))
             {
                 var create = new CreateRestaurantCommand(value.Name
-                    , value.OpeningHours,value.NumberOfTables,value.address,value.city,value.phonenumber);
+                    , value.OpeningHours, value.NumberOfTables, value.address, value.city, value.phonenumber);
                 id = _restaurantServices.CreateRestaurant(create);
             }
             else
