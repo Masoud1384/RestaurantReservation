@@ -27,8 +27,7 @@ namespace BusinessLogicLayer.Services
                  ReservationTime = r.ReservationTime,
                  SpecialRequests = r.SpecialRequests,
                  userId = r.Id,
-                 restaurantName = r.Restaurant.Name
-
+                 restaurantId = r.RestaurantId
              };
             return result;
         }
@@ -44,19 +43,20 @@ namespace BusinessLogicLayer.Services
                 ReservationTime = r.ReservationTime,
                 SpecialRequests = r.SpecialRequests,
                 userId = r.Id,
-                restaurantName = r.Restaurant.Name
-
+                restaurantId = r.RestaurantId
             }).ToList();
         }
 
-        public bool CreateReservation(CreateReservationCommand reservationcmd)
+        public bool CreateReservation(CreateReservationCommand reservationcmd,out int id)
         {
             if (reservationcmd.userId > 0 && reservationcmd != null)
             {
-                var result = new Reservation(reservationcmd.NumberOfGuests, reservationcmd.ReservationTime, reservationcmd.SpecialRequests, reservationcmd.reservationStatus, reservationcmd.userId);
+                var result = new Reservation(reservationcmd.NumberOfGuests, reservationcmd.ReservationTime,reservationcmd.SpecialRequests,(ReservationStatus)reservationcmd.reservationStatus, reservationcmd.userId);
                 _reservationRepository.Create(result);
+                id = result.Id;
                 return _reservationRepository.SaveChanges() == 1;
             }
+            id = 0;
             return false;
         }
 
@@ -71,8 +71,8 @@ namespace BusinessLogicLayer.Services
             var reservation = _reservationRepository.FindUser(id);
             var result = new ReservationViewModel
             {
+                restaurantId = reservation.RestaurantId,
                 reservationStatus = reservation.reservationStatus,
-                restaurantName = reservation.User.Name,
                 ReservationTime = reservation.ReservationTime,
                 Id = id,
                 SpecialRequests = reservation.SpecialRequests,
@@ -94,14 +94,13 @@ namespace BusinessLogicLayer.Services
                 ReservationTime = r.ReservationTime,
                 SpecialRequests = r.SpecialRequests,
                 userId = r.Id,
-                restaurantName = r.Restaurant.Name
-
+                restaurantId = r.RestaurantId
             }).ToList();
         }
 
         public bool UpdateReservation(UpdateReservationCommand reservation)
         {
-            var result = new Reservation(reservation.NumberOfGuests,reservation.ReservationTime,reservation.SpecialRequests,reservation.reservationStatus,reservation.userId);
+            var result = new Reservation(reservation.NumberOfGuests,reservation.ReservationTime,reservation.SpecialRequests,(ReservationStatus)reservation.reservationStatus,reservation.userId);
             return _reservationRepository.Update(result);
         }
         public bool DeleteReservation(int id)
@@ -128,7 +127,7 @@ namespace BusinessLogicLayer.Services
             var reservationExpression = Expression.Lambda<Func<Reservation, bool>>(
                 Expression.Invoke(expression,
                     Expression.Property(viewModelParameter, nameof(ReservationViewModel.Id)),
-                    Expression.Property(viewModelParameter, nameof(ReservationViewModel.restaurantName)),
+                    Expression.Property(viewModelParameter, nameof(ReservationViewModel.restaurantId)),
                     Expression.Property(viewModelParameter, nameof(ReservationViewModel.reservationStatus)),
                     Expression.Property(viewModelParameter, nameof(ReservationViewModel.NumberOfGuests)),
                     Expression.Property(viewModelParameter, nameof(ReservationViewModel.ReservationTime)),

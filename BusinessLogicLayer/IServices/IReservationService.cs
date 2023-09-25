@@ -10,7 +10,7 @@ namespace BusinessLogicLayer.IServices
         List<ReservationViewModel> GetReservations();
         bool ReservationExists(Expression<Func<ReservationViewModel, bool>> expression);
         List<ReservationViewModel> GetReservations(Expression<Func<ReservationViewModel, bool>> expression);
-        bool CreateReservation(CreateReservationCommand reservation);
+        bool CreateReservation(CreateReservationCommand reservation,out int id);
         bool UpdateReservation(UpdateReservationCommand reservation);
         bool DeleteReservation(int id);
     }

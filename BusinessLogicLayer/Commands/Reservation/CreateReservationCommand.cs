@@ -7,16 +7,16 @@ namespace BusinessLogicLayer.Commands.Reservation
     public class CreateReservationCommand
     {
         public int NumberOfGuests { get; set; }
-        public DateTime ReservationTime { get; set; }
+        public  DateTime ReservationTime { get; set; }
         public string SpecialRequests { get; set; }
-        public ReservationStatus reservationStatus { get; set; }
+        public int reservationStatus { get; set; }
         public int userId { get; set; }
         public int restaurantid { get; set; }
         public CreateReservationCommand()
         {
             
         }
-        public CreateReservationCommand(int numberOfGuests, DateTime reservationTime, string specialRequests, ReservationStatus reservationStatus)
+        public CreateReservationCommand(int numberOfGuests, DateTime reservationTime, string specialRequests, int reservationStatus)
         {
             NumberOfGuests = numberOfGuests;
             ReservationTime = reservationTime;
@@ -24,7 +24,7 @@ namespace BusinessLogicLayer.Commands.Reservation
             this.reservationStatus = reservationStatus;
         }
 
-        public CreateReservationCommand(int numberOfGuests, DateTime reservationTime, string specialRequests, ReservationStatus reservationStatus, int user, int restaurant) : this(numberOfGuests, reservationTime, specialRequests, reservationStatus)
+        public CreateReservationCommand(int numberOfGuests, DateTime reservationTime, string specialRequests, int reservationStatus, int user, int restaurant) : this(numberOfGuests, reservationTime, specialRequests, reservationStatus)
         {
             this.userId = user;
             this.restaurantid = restaurant;

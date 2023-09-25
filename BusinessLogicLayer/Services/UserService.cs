@@ -29,9 +29,9 @@ namespace BusinessLogicLayer.Services
                     Id = r.Id ,
                     NumberOfGuests = r.NumberOfGuests,
                     ReservationTime =r.ReservationTime,
-                    restaurantName= r.Restaurant.Name,
                     SpecialRequests = r.SpecialRequests,
                     userId =r.UserId,
+                    restaurantId = r.RestaurantId
                 }).ToList()
             };
             return vm;
@@ -77,8 +77,8 @@ namespace BusinessLogicLayer.Services
                     NumberOfGuests = r.NumberOfGuests,
                     reservationStatus = r.reservationStatus,
                     ReservationTime = r.ReservationTime,
-                    restaurantName = r.Restaurant.Name,
                     SpecialRequests = r.SpecialRequests,
+                    restaurantId = r.RestaurantId
                 }).ToList()
             };
         }
@@ -97,8 +97,8 @@ namespace BusinessLogicLayer.Services
                         NumberOfGuests = r.NumberOfGuests,
                         reservationStatus = r.reservationStatus,
                         ReservationTime = r.ReservationTime,
-                        restaurantName = r.Restaurant.Name,
                         SpecialRequests = r.SpecialRequests,
+                        restaurantId = r.RestaurantId
                     }).ToList()
                 }).ToList();
             return result;

@@ -28,11 +28,11 @@ namespace RestaurantReservation.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] )
-        {
+        //[HttpPost]
+        //public IActionResult Post([FromBody] )
+        //{
 
-        }
+        //}
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

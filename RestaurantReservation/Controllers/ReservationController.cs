@@ -17,31 +17,56 @@ namespace RestaurantReservation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_reservationService.GetReservations());
+            var result = _reservationService.GetReservations();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = _reservationService.FindUser(id);
+            var user = _reservationService.GetReservation(id);
             return Ok(user);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateReservationCommand createReservation)
+        public IActionResult Post([FromBody] CreateReservationCommand reservationCommand)
         {
-            return _reservationService.CreateReservation(createReservation);
+            int id = 0;
+            var result = _reservationService.CreateReservation(reservationCommand,out id);
+            if (result&&id>0)
+            {
+                string url = Url.Action(nameof(Get),"Reservation",new {Id = id },Request.Scheme);
+                return Ok(url);
+            }
+            return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put([FromBody] UpdateReservationCommand reservationCommand)
         {
+            int id = 0;
+            if (!_reservationService.ReservationExists(r=>r.Id==reservationCommand.Id))
+            {
+                var create = new CreateReservationCommand(reservationCommand.NumberOfGuests, reservationCommand.ReservationTime, reservationCommand.SpecialRequests, reservationCommand.reservationStatus);
+                var result = _reservationService.CreateReservation(create,out id);
+            }
+            else
+            {
+                var result = _reservationService.UpdateReservation(reservationCommand);
+            }
+            string url = Url.Action(nameof(Get), "Reservation", new { Id = id }, Request.Scheme);
+            return Ok(url);
         }
 
-        // DELETE api/<ReservationController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (_reservationService.ReservationExists(r=>r.Id==id))
+            {
+                _reservationService.DeleteReservation(id);
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Commands.Reservation;
+using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer.Commands.User
 {
@@ -23,10 +24,9 @@ namespace BusinessLogicLayer.Commands.User
             {
                 NumberOfGuests = r.NumberOfGuests,
                 ReservationTime = r.ReservationTime,
-                restaurantName = r.user.Name,
-                reservatorEmail = r.user.Email,
+                restaurantId = r.restaurantid,
                 SpecialRequests = r.SpecialRequests,
-                reservationStatus = r.reservationStatus,
+                reservationStatus = (ReservationStatus)r.reservationStatus,
             }).ToList();
         }
     }
