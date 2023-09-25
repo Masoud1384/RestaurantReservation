@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Commands.Reservation;
+﻿using BusinessLogicLayer;
+using BusinessLogicLayer.Commands.Reservation;
 using BusinessLogicLayer.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,28 @@ namespace RestaurantReservation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = _reservationService.GetReservations();
+            var result = _reservationService.GetReservations().
+                Select(r=>r.links = new List<ApiLink>
+                {
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Get),"Reservation",new {id = r.Id },Request.Scheme),
+                        Relationship = "Self",
+                        Method = "Get"
+                    },
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Delete),"Reservation",new {id = r.Id },Request.Scheme),
+                        Relationship = "Delete",
+                        Method = "Delete"
+                    },
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Put),"Reservation",Request.Scheme),
+                        Relationship = "Update",
+                        Method = "Put"
+                    },
+                });
             return Ok(result);
         }
 
