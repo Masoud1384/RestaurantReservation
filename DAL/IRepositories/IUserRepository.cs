@@ -8,6 +8,7 @@ namespace DataAccessLayer.IRepositories
         int CreateUser(User user);
         User FindUser(int id);
         List<User> Users(Expression<Func<User, bool>> expression);
+        List<User> Users();
         bool Update(User user);
         bool Delete(int id);
     }

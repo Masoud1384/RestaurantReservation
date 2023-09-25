@@ -27,19 +27,19 @@ namespace RestaurantReservation.Controllers
                 {
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Get),"Reservation",new {id = r.id },Request.Scheme),
+                        Hrref = Url.Action(nameof(Get),"Restaurant",new {id = r.id },Request.Scheme),
                         Relationship = "Self",
                         Method = "Get"
                     },
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Delete),"Reservation",new {id = r.id},Request.Scheme),
+                        Hrref = Url.Action(nameof(Delete),"Restaurant",new {id = r.id},Request.Scheme),
                         Relationship = "Delete",
                         Method = "Delete"
                     },
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Put),"Reservation",Request.Scheme),
+                        Hrref = Url.Action(nameof(Put),"Restaurant",Request.Scheme),
                         Relationship = "Update",
                         Method = "Put"
                     },

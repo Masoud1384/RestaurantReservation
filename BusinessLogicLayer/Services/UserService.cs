@@ -18,9 +18,10 @@ namespace BusinessLogicLayer.Services
 
         public UserViewModel GetUser(int id)
         {
-            var result = _userRepository.Get(id);
+            var result = _userRepository.FindUser(id);
             var vm = new UserViewModel
             {
+                id = id,
                 Email = result.Email,
                 Name = result.Name,
                 Reservations = result.Reservations.Select(r => new ReservationViewModel
@@ -42,6 +43,7 @@ namespace BusinessLogicLayer.Services
             return _userRepository.Get()
                 .Select(u => new UserViewModel
                 {
+                    id = u.Id ,
                     Email = u.Email,
                     Name = u.Name,
                 }).ToList();

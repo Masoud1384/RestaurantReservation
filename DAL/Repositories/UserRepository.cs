@@ -47,5 +47,10 @@ namespace DataAccessLayer.Repositories
             _context.users.Remove(user);
             return _context.SaveChanges() == 1;
         }
+
+        public List<User> Users()
+        {
+            return _context.users.Include(r => r.Reservations).ToList();
+        }
     }
 }

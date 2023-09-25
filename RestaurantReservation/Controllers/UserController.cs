@@ -22,29 +22,35 @@ namespace RestaurantReservation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var reslut = _userService.GetUsers()
-                .Select(r => r.links = new List<ApiLink>
+            var result = _userService.GetUsers()
+                .Select(r => new UserViewModel
+                {
+                    Email = r.Email,
+                    id = r.id,
+                    Name = r.Email,
+                    Reservations = r.Reservations,
+                    links = r.links = new List<ApiLink>
                 {
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Get),"Reservation",new {id = r.id },Request.Scheme),
+                        Hrref = Url.Action(nameof(Get),"User",new {id = r.id },Request.Scheme),
                         Relationship = "Self",
                         Method = "Get"
                     },
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Delete),"Reservation",new {id = r.id},Request.Scheme),
+                        Hrref = Url.Action(nameof(Delete),"User",new {id = r.id},Request.Scheme),
                         Relationship = "Delete",
                         Method = "Delete"
                     },
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Put),"Reservation",Request.Scheme),
+                        Hrref = Url.Action(nameof(Put),"User",new {userCmd = r },Request.Scheme),
                         Relationship = "Update",
                         Method = "Put"
                     },
-                });
-            return Ok();
+                }});
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

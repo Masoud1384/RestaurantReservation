@@ -19,17 +19,21 @@ namespace BusinessLogicLayer.Services
         public ReservationViewModel GetReservation(int id)
         {
             var r = _reservationRepository.Get(id);
-             var result = new ReservationViewModel
-             {
-                 Id = r.Id,
-                 NumberOfGuests = r.NumberOfGuests,
-                 reservationStatus = r.reservationStatus,
-                 ReservationTime = r.ReservationTime,
-                 SpecialRequests = r.SpecialRequests,
-                 userId = r.Id,
-                 restaurantId = r.RestaurantId
-             };
-            return result;
+            if (r != null)
+            {
+                var result = new ReservationViewModel
+                {
+                    Id = r.Id,
+                    NumberOfGuests = r.NumberOfGuests,
+                    reservationStatus = r.reservationStatus,
+                    ReservationTime = r.ReservationTime,
+                    SpecialRequests = r.SpecialRequests,
+                    userId = r.Id,
+                    restaurantId = r.RestaurantId
+                };
+                return result;
+            }
+            return new ReservationViewModel();
         }
 
         public List<ReservationViewModel> GetReservations()
