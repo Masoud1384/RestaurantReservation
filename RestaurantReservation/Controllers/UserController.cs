@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Commands.Reservation;
+﻿using BusinessLogicLayer;
+using BusinessLogicLayer.Commands.Reservation;
 using BusinessLogicLayer.Commands.User;
 using BusinessLogicLayer.IServices;
 using BusinessLogicLayer.Services;
@@ -21,7 +22,29 @@ namespace RestaurantReservation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_userService.GetUsers());
+            var reslut = _userService.GetUsers()
+                .Select(r => r.links = new List<ApiLink>
+                {
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Get),"Reservation",new {id = r.id },Request.Scheme),
+                        Relationship = "Self",
+                        Method = "Get"
+                    },
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Delete),"Reservation",new {id = r.id},Request.Scheme),
+                        Relationship = "Delete",
+                        Method = "Delete"
+                    },
+                    new ApiLink
+                    {
+                        Hrref = Url.Action(nameof(Put),"Reservation",Request.Scheme),
+                        Relationship = "Update",
+                        Method = "Put"
+                    },
+                });
+            return Ok();
         }
 
         [HttpGet("{id}")]
@@ -49,7 +72,7 @@ namespace RestaurantReservation.Controllers
             int result = 0;
             if (!_userService.UserExists(r => r.id == userCmd.Id))
             {
-                var create = new CreateUserCommand(userCmd.Name,userCmd.Email);
+                var create = new CreateUserCommand(userCmd.Name, userCmd.Email);
                 result = _userService.CreateUser(create);
             }
             else

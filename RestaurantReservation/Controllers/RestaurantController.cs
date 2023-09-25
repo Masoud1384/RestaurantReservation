@@ -43,7 +43,7 @@ namespace RestaurantReservation.Controllers
                         Relationship = "Update",
                         Method = "Put"
                     },
-                }); ;
+                });
             return Ok(result);
         }
 
