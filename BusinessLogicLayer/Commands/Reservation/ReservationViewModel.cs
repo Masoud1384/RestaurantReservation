@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BusinessLogicLayer.Commands.Reservation
 {
@@ -11,5 +12,9 @@ namespace BusinessLogicLayer.Commands.Reservation
         public ReservationStatus reservationStatus { get; set; }
         public int restaurantId { get; set; }
         public int userId { get; set; }
+
+
+        public List<ApiLink> links { get; set; }
+
     }
 }

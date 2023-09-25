@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Commands.Restaurant;
+﻿using BusinessLogicLayer.Commands.Reservation;
+using BusinessLogicLayer.Commands.Restaurant;
 using BusinessLogicLayer.IServices;
 using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -44,16 +45,33 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put([FromBody] UpdateRestaurantCommand value)
+        public IActionResult Put([FromBody] UpdateRestaurantCommand value)
         {
-
-
+            int id = 0;
+            if (!_restaurantServices.RestaurantExists(r => r.id == value.Id))
+            {
+                var create = new CreateRestaurantCommand(value.Name
+                    , value.OpeningHours,value.NumberOfTables,value.address,value.city,value.phonenumber);
+                id = _restaurantServices.CreateRestaurant(create);
+            }
+            else
+            {
+                _restaurantServices.UpdateRestaurant(value);
+                id = value.Id;
+            }
+            string url = Url.Action(nameof(Get), "Reservation", new { Id = id }, Request.Scheme);
+            return Ok(url);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-
+            if (_restaurantServices.RestaurantExists(r => r.id == id))
+            {
+                _restaurantServices.DeleteRestaurant(id);
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }
