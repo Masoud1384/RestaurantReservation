@@ -19,23 +19,27 @@ namespace BusinessLogicLayer.Services
         public UserViewModel GetUser(int id)
         {
             var result = _userRepository.FindUser(id);
-            var vm = new UserViewModel
+            if(result != null)
             {
-                id = id,
-                Email = result.Email,
-                Name = result.Name,
-                Reservations = result.Reservations.Select(r => new ReservationViewModel
+                var vm = new UserViewModel
                 {
-                    reservationStatus = r.reservationStatus,
-                    Id = r.Id ,
-                    NumberOfGuests = r.NumberOfGuests,
-                    ReservationTime =r.ReservationTime,
-                    SpecialRequests = r.SpecialRequests,
-                    userId =r.UserId,
-                    restaurantId = r.RestaurantId
-                }).ToList()
-            };
-            return vm;
+                    id = id,
+                    Email = result.Email,
+                    Name = result.Name,
+                    Reservations = result.Reservations.Select(r => new ReservationViewModel
+                    {
+                        reservationStatus = r.reservationStatus,
+                        Id = r.Id,
+                        NumberOfGuests = r.NumberOfGuests,
+                        ReservationTime = r.ReservationTime,
+                        SpecialRequests = r.SpecialRequests,
+                        userId = r.UserId,
+                        restaurantId = r.RestaurantId
+                    }).ToList()
+                };
+                return vm;
+            }
+            return new UserViewModel();
         }
 
         public List<UserViewModel> GetUsers()

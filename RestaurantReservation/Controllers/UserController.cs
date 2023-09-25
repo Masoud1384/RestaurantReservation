@@ -56,7 +56,12 @@ namespace RestaurantReservation.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_userService.GetUser(id));
+            var result = _userService.GetUser(id);
+            if (result.id != 0)
+            {
+                return Ok(result);
+            }
+            return NotFound();
         }
 
         [HttpPost]
