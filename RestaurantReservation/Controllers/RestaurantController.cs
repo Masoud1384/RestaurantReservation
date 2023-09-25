@@ -1,4 +1,6 @@
-﻿using BusinessLogicLayer.IServices;
+﻿using BusinessLogicLayer.Commands.Restaurant;
+using BusinessLogicLayer.IServices;
+using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,7 +20,8 @@ namespace RestaurantReservation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_restaurantServices.GetRestaurants());
+            var result = _restaurantServices.GetRestaurants();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -28,15 +31,23 @@ namespace RestaurantReservation.Controllers
             return Ok(result);
         }
 
-        //[HttpPost]
-        //public IActionResult Post([FromBody] )
-        //{
-
-        //}
+        [HttpPost]
+        public IActionResult Post([FromBody] CreateRestaurantCommand restaurantCommand)
+        {
+            var result = _restaurantServices.CreateRestaurant(restaurantCommand);
+            if (result > 0)
+            {
+                string url = Url.Action(nameof(Get), "Reservation", new { Id = result }, Request.Scheme);
+                return Ok(url);
+            }
+            return BadRequest();
+        }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put([FromBody] UpdateRestaurantCommand value)
         {
+
+
         }
 
         [HttpDelete("{id}")]

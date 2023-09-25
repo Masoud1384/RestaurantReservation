@@ -15,7 +15,7 @@ namespace BusinessLogicLayer.Services
         {
             _restaurantRepository = restaurantRepository;
         }
-        public RestaurantViewModel GetRestaurant(int id) 
+        public RestaurantViewModel GetRestaurant(int id)
         {
             var r = _restaurantRepository.Get(id);
             var vm = new RestaurantViewModel
@@ -32,35 +32,36 @@ namespace BusinessLogicLayer.Services
         public List<RestaurantViewModel> GetRestaurants()
         {
             return _restaurantRepository.Get().
-                Select(r=> new RestaurantViewModel
+                Select(r => new RestaurantViewModel
                 {
                     address = r.restaurantInformation.address,
                     city = r.restaurantInformation.city,
                     Name = r.Name,
                     NumberOfTables = r.NumberOfTables,
-                    OpeningHours= r.OpeningHours,
-                    phonenumber =r.restaurantInformation.phonenumber
+                    OpeningHours = r.OpeningHours,
+                    phonenumber = r.restaurantInformation.phonenumber
                 }).ToList();
         }
-        public List<RestaurantViewModel> GetRestaurants(Expression<Func<RestaurantViewModel,bool>> expression)
+        public List<RestaurantViewModel> GetRestaurants(Expression<Func<RestaurantViewModel, bool>> expression)
         {
             return _restaurantRepository.Get().
-                Select(r=> new RestaurantViewModel
+                Select(r => new RestaurantViewModel
                 {
                     address = r.restaurantInformation.address,
                     city = r.restaurantInformation.city,
                     Name = r.Name,
                     NumberOfTables = r.NumberOfTables,
-                    OpeningHours= r.OpeningHours,
-                    phonenumber =r.restaurantInformation.phonenumber
+                    OpeningHours = r.OpeningHours,
+                    phonenumber = r.restaurantInformation.phonenumber
                 }).ToList();
         }
-        public void CreateRestaurant(CreateRestaurantCommand restaurant)
+        public int CreateRestaurant(CreateRestaurantCommand restaurant)
         {
-            var result = new Restaurant(restaurant.Name,restaurant.OpeningHours,restaurant.NumberOfTables,
-                new Address(restaurant.address,restaurant.city,restaurant.phonenumber));
+            var result = new Restaurant(restaurant.Name, restaurant.OpeningHours, restaurant.NumberOfTables,
+                new Address(restaurant.address, restaurant.city, restaurant.phonenumber));
             _restaurantRepository.Create(result);
             _restaurantRepository.SaveChanges();
+            return result.Id;
         }
         public bool RestaurantExists(Expression<Func<RestaurantViewModel, bool>> expression)
         {
@@ -72,10 +73,10 @@ namespace BusinessLogicLayer.Services
             var r = _restaurantRepository.FindRestaurant(id);
             var vm = new RestaurantViewModel
             {
-                address= r.restaurantInformation.address,
+                address = r.restaurantInformation.address,
                 city = r.restaurantInformation.city,
                 Name = r.Name,
-                NumberOfTables= r.NumberOfTables,
+                NumberOfTables = r.NumberOfTables,
                 OpeningHours = r.OpeningHours,
                 phonenumber = r.restaurantInformation.phonenumber
             };
@@ -83,11 +84,11 @@ namespace BusinessLogicLayer.Services
         }
         public bool UpdateRestaurant(UpdateRestaurantCommand restaurant)
         {
-            var result = new Restaurant(restaurant.Name,restaurant.OpeningHours,restaurant.NumberOfTables
-                ,new Address(restaurant.address,restaurant.city,restaurant.phonenumber));
+            var result = new Restaurant(restaurant.Name, restaurant.OpeningHours, restaurant.NumberOfTables
+                , new Address(restaurant.address, restaurant.city, restaurant.phonenumber));
             return _restaurantRepository.Update(result);
         }
-        private Expression<Func<Restaurant,bool>> Converter(Expression<Func<RestaurantViewModel, bool>> expression)
+        private Expression<Func<Restaurant, bool>> Converter(Expression<Func<RestaurantViewModel, bool>> expression)
         {
             var viewModelParameter = Expression.Parameter(typeof(RestaurantViewModel), "viewModel");
 
