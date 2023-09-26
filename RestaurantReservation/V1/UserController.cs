@@ -1,13 +1,11 @@
 ﻿using BusinessLogicLayer;
-using BusinessLogicLayer.Commands.Reservation;
 using BusinessLogicLayer.Commands.User;
 using BusinessLogicLayer.IServices;
-using BusinessLogicLayer.Services;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.DependencyResolver;
 
-namespace RestaurantReservation.Controllers
+namespace RestaurantReservation.V1
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -20,7 +18,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public virtual IActionResult Get()
         {
             var result = _userService.GetUsers()
                 .Select(r => new UserViewModel
@@ -33,22 +31,23 @@ namespace RestaurantReservation.Controllers
                 {
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Get),"User",new {id = r.id },Request.Scheme),
+                        Hrref = Url.Action(nameof(Get),"User",new {r.id },Request.Scheme),
                         Relationship = "Self",
                         Method = "Get"
                     },
                     new ApiLink
                     {
-                        Hrref = Url.Action(nameof(Delete),"User",new {id = r.id},Request.Scheme),
+                        Hrref = Url.Action(nameof(Delete),"User",new {r.id},Request.Scheme),
                         Relationship = "Delete",
                         Method = "Delete"
                     },
-                }});
+                }
+                });
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public virtual IActionResult Get(int id)
         {
             var result = _userService.GetUser(id);
             if (result.id != 0)
@@ -59,7 +58,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromQuery] CreateUserCommand createUserCommand)
+        public virtual IActionResult Post([FromQuery] CreateUserCommand createUserCommand)
         {
             var userId = _userService.CreateUser(createUserCommand);
             if (userId != -1)
@@ -71,7 +70,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] UpdateUserCommand userCmd)
+        public virtual IActionResult Put([FromBody] UpdateUserCommand userCmd)
         {
             int result = 0;
             if (!_userService.UserExists(r => r.id == userCmd.Id))
@@ -90,7 +89,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public virtual IActionResult Delete(int id)
         {
             var result = _userService.DeleteUser(id);
             if (result)

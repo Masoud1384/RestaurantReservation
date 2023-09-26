@@ -3,8 +3,9 @@ using BusinessLogicLayer.Commands.Reservation;
 using BusinessLogicLayer.IServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RestaurantReservation.Controllers
+namespace RestaurantReservation.V1
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
@@ -16,7 +17,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public virtual IActionResult Get()
         {
             var result = _reservationService.GetReservations().
                 Select(r =>
@@ -49,14 +50,14 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public virtual IActionResult Get(int id)
         {
             var user = _reservationService.GetReservation(id);
             return Ok(user);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateReservationCommand reservationCommand)
+        public virtual IActionResult Post([FromBody] CreateReservationCommand reservationCommand)
         {
             int id = 0;
             var result = _reservationService.CreateReservation(reservationCommand, out id);
@@ -69,7 +70,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] UpdateReservationCommand reservationCommand)
+        public virtual IActionResult Put([FromBody] UpdateReservationCommand reservationCommand)
         {
             int id = 0;
             if (!_reservationService.ReservationExists(r => r.Id == reservationCommand.Id))
@@ -86,7 +87,7 @@ namespace RestaurantReservation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public virtual IActionResult Delete(int id)
         {
             if (_reservationService.ReservationExists(r => r.Id == id))
             {
