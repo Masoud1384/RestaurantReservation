@@ -57,10 +57,9 @@ namespace BusinessLogicLayer.Services
         {
             var newUser = new User(user.Name, user.Email);
             var result = _userRepository.CreateUser(newUser);
-            if (_userRepository.SaveChanges() == 1)
+            if (result != -1)
             {
-                _userRepository.Create(newUser);
-                return newUser.Id;
+                return result;
             }
             return -1;
         }
