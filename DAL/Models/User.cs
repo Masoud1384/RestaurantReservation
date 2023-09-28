@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public List<Reservation>? Reservations { get; set; }
+        public ICollection<UserToken> tokens { get; set; }
         public User()
         {
                 
