@@ -14,10 +14,12 @@ namespace BusinessLogicLayer
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<IReservationService,ReservationService>();
             services.AddScoped<IRestaurantServices,RestaurantService>();
+            services.AddScoped<IUserTokenService, UserTokenService>();
         }
     }
 }

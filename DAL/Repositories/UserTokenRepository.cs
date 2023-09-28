@@ -14,7 +14,8 @@ namespace DataAccessLayer.Repositories
 
         public void SaveTokenInDataBase(UserToken token)
         {
-            throw new NotImplementedException();
+            _context.UserTokens.Add(token);
+            _context.SaveChanges();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace DataAccessLayer
 {
@@ -15,7 +16,7 @@ namespace DataAccessLayer
         public DbSet<Restaurant> restaurants { get; set; }
         public DbSet<Reservation> reservations { get; set; }
 
-
+        public DbSet<UserToken> UserTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
